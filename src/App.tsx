@@ -52,20 +52,28 @@ const App = () => {
           <Sonner />
           <BrowserRouter>
             <div className="min-h-screen bg-slate-50 font-sans">
-              <EJNavigation />
               <Routes>
                 {/* Welcome Hub is now the LANDING PAGE (Root) */}
-                <Route path="/" element={<WelcomeHub />} />
+                <Route path="/" element={
+                  <>
+                    <EJNavigation />
+                    <WelcomeHub />
+                  </>
+                } />
 
-                {/* Explicit routes for the other views */}
+                {/* Explicit routes for the other views - CLEAN (No Dev Nav) */}
                 <Route path="/branch" element={<SiteSimulator theme="ej" />} />
                 <Route path="/corporate" element={<SiteSimulator theme="corporate" />} />
-                <Route path="/hub" element={<WelcomeHub />} />
 
-                {/* Legacy cleanup: redirect any old /ej paths to root */}
+                <Route path="/hub" element={
+                  <>
+                    <EJNavigation />
+                    <WelcomeHub />
+                  </>
+                } />
+
+                {/* Legacy cleanup & Catch-all */}
                 <Route path="/ej" element={<WelcomeHub />} />
-
-                {/* Catch-all redirects back to Deborah's page for the launch */}
                 <Route path="*" element={<SiteSimulator theme="ej" />} />
               </Routes>
             </div>

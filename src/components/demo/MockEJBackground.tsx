@@ -22,11 +22,13 @@ const MockEJBackground = () => {
                     <div className="flex items-center gap-12">
                         {/* CSS-BASED WORDMARK LOGO - FAST & LITE */}
                         {/* OFFICIAL EJ LOGO IMAGE */}
-                        <img
-                            src="/ej-logo.png"
-                            alt="Edward Jones"
-                            className="h-20 w-auto"
-                        />
+                        <a href="/" className="hover:opacity-80 transition-opacity">
+                            <img
+                                src="/ej-logo.png"
+                                alt="Edward Jones"
+                                className="h-20 w-auto"
+                            />
+                        </a>
 
                         <nav className="hidden lg:flex items-center gap-8 text-sm font-bold text-[#183029]/80 uppercase tracking-tight">
                             <span className="cursor-pointer hover:text-[#183029]">What We Do</span>
