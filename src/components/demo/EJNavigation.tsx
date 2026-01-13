@@ -14,14 +14,15 @@ const EJNavigation = () => {
     return (
         <nav className="w-full bg-white text-slate-900 border-b-4 border-[#FFCE00] shadow-sm sticky top-0 z-50">
             <div className="container mx-auto px-4 h-20 grid grid-cols-3 items-center">
-                {/* Left Side: Phone Number */}
+                {/* Left Side: Logo Area */}
                 <div className="flex items-center justify-start">
-                    <a
-                        href="tel:4322879145"
-                        className="text-lg font-black text-[#183028] hover:text-green-700 transition-colors"
-                    >
-                        (432) 287-9145
-                    </a>
+                    <Link to="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
+                        <img
+                            src="/ej-logo-new.png"
+                            alt="Edward Jones"
+                            className="h-10 w-auto object-contain"
+                        />
+                    </Link>
                 </div>
 
                 {/* Center: Navigation Links */}
@@ -57,15 +58,17 @@ const EJNavigation = () => {
                     </Link>
                 </div>
 
-                {/* Right Side: Logo Area */}
-                <div className="flex items-center justify-end">
-                    <Link to="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
-                        <img
-                            src="/ej-logo-new.png"
-                            alt="Edward Jones"
-                            className="h-10 w-auto object-contain"
-                        />
-                    </Link>
+                {/* Right Side: Contact Info */}
+                <div className="flex flex-col items-end justify-center">
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-400 leading-none mb-1">
+                        Contact Joe Tran
+                    </span>
+                    <a
+                        href="tel:4322879145"
+                        className="text-lg font-black text-[#183028] hover:text-green-700 transition-colors leading-none"
+                    >
+                        (432) 287-9145
+                    </a>
                 </div>
             </div>
         </nav>
