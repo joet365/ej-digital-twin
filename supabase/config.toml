@@ -1,0 +1,10 @@
+project_id = "yuoksgysfefxplwhfprs"
+
+[functions.generate-agent]
+verify_jwt = false
+
+[functions.vapi-webhook]
+verify_jwt = false
+
+[functions.submit-lead]
+verify_jwt = false

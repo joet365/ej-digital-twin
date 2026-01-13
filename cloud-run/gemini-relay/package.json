@@ -1,0 +1,25 @@
+{
+    "name": "gemini-live-relay",
+    "version": "1.0.0",
+    "description": "Standard Node.js WebSocket relay for Gemini Live API",
+    "main": "dist/index.js",
+    "scripts": {
+        "start": "node dist/index.js",
+        "build": "tsc",
+        "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+    },
+    "dependencies": {
+        "@google-cloud/vertexai": "^1.9.0",
+        "@supabase/supabase-js": "^2.39.3",
+        "axios": "^1.13.2",
+        "dotenv": "^16.4.7",
+        "ws": "^8.18.0"
+    },
+    "devDependencies": {
+        "@types/axios": "^0.9.36",
+        "@types/node": "^20.11.0",
+        "@types/ws": "^8.5.10",
+        "ts-node-dev": "^2.0.0",
+        "typescript": "^5.3.3"
+    }
+}

@@ -1,0 +1,235 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 220 13% 26%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 13% 26%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 13% 26%;
+
+    --primary: 221 83% 53%;
+    /* Blue from marketing site */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+
+    --accent: 258 90% 66%;
+    /* Purple from marketing site */
+    --accent-foreground: 0 0% 100%;
+
+    --success: 160 84% 39%;
+    --success-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 221 83% 53%;
+
+    --radius: 0.75rem;
+
+    /* Step colors for onboarding */
+    --step-active: 217 91% 68%;
+    --step-inactive: 220 9% 46%;
+    --step-complete: 160 84% 39%;
+  }
+
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 210 40% 98%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+
+  /* Receptionist App Gradients */
+  .gradient-bg {
+    background: linear-gradient(135deg, hsl(239 84% 67%) 0%, hsl(271 81% 56%) 100%);
+  }
+
+  .gradient-btn {
+    background: linear-gradient(135deg, hsl(239 84% 67%) 0%, hsl(239 70% 60%) 100%);
+  }
+
+  /* Marketing Site Gradients */
+  .gradient-hero {
+    background: linear-gradient(135deg, hsl(221 83% 25%) 0%, hsl(258 90% 45%) 100%);
+  }
+
+  .gradient-cta-animated {
+    background: linear-gradient(135deg, hsl(221 83% 20%) 0%, hsl(258 90% 40%) 50%, hsl(221 83% 25%) 100%);
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+
+  /* Joe page gradient - teal/blue theme */
+  .gradient-hero-joe {
+    background: linear-gradient(135deg, hsl(180 50% 15%) 0%, hsl(200 70% 20%) 50%, hsl(220 60% 15%) 100%);
+  }
+
+  /* Lexi page gradient - pink/orange theme */
+  .gradient-hero-lexi {
+    background: linear-gradient(135deg, hsl(330 50% 20%) 0%, hsl(350 60% 25%) 50%, hsl(20 50% 20%) 100%);
+  }
+
+  /* Consulting page gradient - purple/blue theme */
+  .gradient-hero-consulting {
+    background: linear-gradient(135deg, hsl(258 60% 20%) 0%, hsl(230 70% 25%) 50%, hsl(258 50% 15%) 100%);
+  }
+
+  /* Joe CTA gradient - animated teal/blue theme */
+  .gradient-cta-joe {
+    background: linear-gradient(135deg, hsl(180 50% 15%) 0%, hsl(200 70% 20%) 50%, hsl(220 60% 15%) 100%);
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+
+  /* Lexi CTA gradient - animated pink/orange theme */
+  .gradient-cta-lexi {
+    background: linear-gradient(135deg, hsl(330 50% 20%) 0%, hsl(350 60% 25%) 50%, hsl(20 50% 20%) 100%);
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+
+  /* Consulting CTA gradient - animated purple/blue theme */
+  .gradient-cta-consulting {
+    background: linear-gradient(135deg, hsl(258 60% 20%) 0%, hsl(230 70% 25%) 50%, hsl(258 50% 15%) 100%);
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+}
+
+@layer utilities {
+/* Holly page gradients */
+.gradient-hero-holly {
+  background: linear-gradient(135deg, hsl(16 60% 15%) 0%, hsl(30 70% 20%) 50%, hsl(45 50% 15%) 100%);
+}
+
+.gradient-cta-holly {
+  background: linear-gradient(135deg, hsl(16 60% 15%) 0%, hsl(30 70% 20%) 50%, hsl(45 50% 15%) 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+.text-gradient-holly {
+  background: linear-gradient(135deg, hsl(16 85% 58%) 0%, hsl(30 90% 65%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(258 90% 80%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-grid {
+    background-image:
+      linear-gradient(hsla(0 0% 100% / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, hsla(0 0% 100% / 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .glow-success {
+    box-shadow: 0 0 40px hsla(160 84% 39% / 0.4);
+  }
+
+  .glow-teal {
+    box-shadow: 0 0 40px hsla(160 84% 39% / 0.4);
+  }
+
+  .glow-pink {
+    box-shadow: 0 0 40px hsla(330 80% 50% / 0.4);
+  }
+
+  .glow-purple {
+    box-shadow: 0 0 40px hsla(258 80% 60% / 0.4);
+  }
+
+  /* Text gradients for page themes */
+  .text-gradient-joe {
+    background: linear-gradient(135deg, hsl(160 80% 50%) 0%, hsl(180 80% 60%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-lexi {
+    background: linear-gradient(135deg, hsl(330 80% 60%) 0%, hsl(350 80% 70%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-consulting {
+    background: linear-gradient(135deg, hsl(258 80% 70%) 0%, hsl(230 80% 80%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .mobile-safe-area {
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+}
