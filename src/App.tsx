@@ -54,8 +54,8 @@ const App = () => {
             <div className="min-h-screen bg-slate-50 font-sans">
               <EJNavigation />
               <Routes>
-                {/* Deborah's Advisor Page is now the LANDING PAGE (Root) */}
-                <Route path="/" element={<SiteSimulator theme="ej" />} />
+                {/* Welcome Hub is now the LANDING PAGE (Root) */}
+                <Route path="/" element={<WelcomeHub />} />
 
                 {/* Explicit routes for the other views */}
                 <Route path="/branch" element={<SiteSimulator theme="ej" />} />
