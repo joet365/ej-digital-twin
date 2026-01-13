@@ -16,37 +16,7 @@ const MockEJBackground = () => {
     return (
         <div className="fixed inset-0 bg-white overflow-y-auto font-sans text-slate-800">
 
-            {/* Main Header */}
-            <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-                <div className="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
-                    <div className="flex items-center gap-12">
-                        {/* CSS-BASED WORDMARK LOGO - FAST & LITE */}
-                        {/* OFFICIAL EJ LOGO IMAGE */}
-                        <a href="/" className="hover:opacity-80 transition-opacity">
-                            <img
-                                src="/ej-logo.png"
-                                alt="Edward Jones"
-                                className="h-20 w-auto"
-                            />
-                        </a>
-
-                        <nav className="hidden lg:flex items-center gap-8 text-sm font-bold text-[#183029]/80 uppercase tracking-tight">
-                            <span className="cursor-pointer hover:text-[#183029]">What We Do</span>
-                            <span className="cursor-pointer hover:text-[#183029]">Services</span>
-                            <span className="cursor-pointer hover:text-[#183029]">News</span>
-                            <span className="cursor-pointer hover:text-[#183029]">About</span>
-                        </nav>
-                    </div>
-
-                    <div className="flex items-center gap-4">
-                        <Button variant="ghost" size="sm" className="font-bold text-[#183029]">Log In</Button>
-                        <Button size="sm" className="bg-[#183029] hover:bg-[#2a4d44] text-white font-bold px-6 rounded-full">
-                            Find an Advisor
-                        </Button>
-                        <Menu className="w-6 h-6 lg:hidden text-slate-800" />
-                    </div>
-                </div>
-            </header>
+            {/* Main Content Area */}
 
             {/* Hero Section */}
             <main>
