@@ -113,20 +113,22 @@ const ChatOverlay = ({
         if (isDeborah) {
             return [{
                 id: "1",
-                text: `Hi! 👋 I'm Deborah D Saurage's AI assistant. To get started, may I ask your name? [image:https://yuoksgysfefxplwhfprs.supabase.co/storage/v1/object/public/mms-images/branded_output.png]`,
+                text: `Hi! 👋 I'm Deborah D Saurage's AI assistant. To get started, may I ask your name?`,
                 isKate: true,
                 timestamp: new Date(),
                 quickReplies: ["Retirement Planning", "Estate Planning", "Investment Review", "Just Curious"],
+                imageUrl: "https://yuoksgysfefxplwhfprs.supabase.co/storage/v1/object/public/mms-images/branded_output.png",
             }];
         }
 
         // Generic / Corporate Fallback
         return [{
             id: "1",
-            text: `Hi! 👋 I'm Kate, your AI assistant for ${companyName}. How can I help you today? [image:https://yuoksgysfefxplwhfprs.supabase.co/storage/v1/object/public/mms-images/branded_output.png]`,
+            text: `Hi! 👋 I'm Kate, your AI assistant for ${companyName}. How can I help you today?`,
             isKate: true,
             timestamp: new Date(),
             quickReplies: ["AI Receptionist", "AI Sales", "AI Workforce", "Increase Sales", "How it Works"],
+            imageUrl: "https://yuoksgysfefxplwhfprs.supabase.co/storage/v1/object/public/mms-images/branded_output.png",
         }];
     };
 
