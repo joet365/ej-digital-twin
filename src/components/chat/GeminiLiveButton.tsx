@@ -414,7 +414,7 @@ export const GeminiLiveButton = forwardRef<GeminiLiveButtonHandle, GeminiLiveBut
                 ) : (
                     <>
                         <Phone className="w-4 h-4 mr-2 fill-yellow-400 text-yellow-400" />
-                        Click to talk to {label}
+                        Click to talk to Kate
                     </>
                 )}
             </Button>
