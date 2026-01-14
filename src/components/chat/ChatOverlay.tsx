@@ -113,11 +113,10 @@ const ChatOverlay = ({
         if (isDeborah) {
             return [{
                 id: "1",
-                text: `Hi! 👋 I'm Deborah D Saurage's AI assistant. To get started, may I ask your name?`,
+                text: `Hi! 👋 I'm Kate, Deborah D Saurage's AI assistant. To get started, may I ask your name?`,
                 isKate: true,
                 timestamp: new Date(),
                 quickReplies: ["Retirement Planning", "Estate Planning", "Investment Review", "Just Curious"],
-                imageUrl: "https://yuoksgysfefxplwhfprs.supabase.co/storage/v1/object/public/mms-images/branded_output.png",
             }];
         }
 
