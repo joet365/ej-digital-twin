@@ -43,34 +43,6 @@ const SiteSimulator = ({ theme: propTheme, agentId: propAgentId }: SiteSimulator
                 avatar={isBranch ? "/deborah-headshot.png" : undefined}
             />
 
-            {/* Left Hand Demo Warning */}
-            {showInfo && (
-                <div className="fixed bottom-32 left-8 z-50 animate-in fade-in slide-in-from-left-4 duration-500">
-                    <div className="bg-[#FFCE00] text-[#183029] shadow-2xl border-2 border-[#183029]/10 rounded-2xl p-4 max-w-[200px] flex flex-col gap-2 relative overflow-hidden group hover:scale-105 transition-transform">
-                        <div className="absolute top-0 left-0 w-full h-1 bg-[#183029]/10" />
-                        <div className="flex justify-between items-center">
-                            <div className="flex items-center gap-2">
-                                <AlertCircle className="w-4 h-4 text-[#183029]" />
-                                <span className="font-black text-[10px] uppercase tracking-tighter">Demo Environment</span>
-                            </div>
-                            <button
-                                onClick={() => setShowInfo(false)}
-                                className="text-[#183029]/60 hover:text-[#183029] transition-colors"
-                                aria-label="Dismiss info"
-                                title="Dismiss info"
-                            >
-                                <X className="w-3 h-3" />
-                            </button>
-                        </div>
-                        <p className="text-[11px] font-bold leading-tight">
-                            Trained on Edward Jones basic info to act as an AI Sales Assistant.
-                        </p>
-                        <p className="text-[10px] text-[#183029]/80 italic font-medium">
-                            Click on Kate to talk!
-                        </p>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
