@@ -56,64 +56,69 @@ const ChatWidgetMinimized = ({
 
     if (showPopup && videoUrl) {
         return (
-            <div className="fixed bottom-6 right-6 z-50 animate-in slide-in-from-bottom-4 duration-500">
-                <div
-                    className="relative group w-[220px] sm:w-[260px] aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl transition-transform hover:scale-[1.02] cursor-pointer bg-white"
-                    onClick={handleVideoClick}
-                >
-                    {/* Video Elements */}
-                    <div className="absolute inset-0 bg-black/10 z-10" />
-                    <video
-                        ref={videoRef}
-                        src={videoUrl}
-                        className="w-full h-full object-cover"
-                        autoPlay
-                        loop
-                        muted={isMuted}
-                        playsInline
-                    />
+            <>
+                {/* Full-page backdrop blur when video popup is active */}
+                <div className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm transition-opacity duration-300" onClick={handleMinimize} />
 
-                    {/* Online Badge */}
-                    <div className="absolute top-4 left-4 z-20 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full pointer-events-none">
-                        <div className={cn("w-2.5 h-2.5 rounded-full", isOnline ? "bg-green-500 animate-pulse" : "bg-gray-400")} />
-                        <span className="text-xs font-medium text-white">Kate is online</span>
-                    </div>
-
-                    {/* Volume/Unmute Overlay Hint */}
-                    {isMuted && (
-                        <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
-                            <div className="w-12 h-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center animate-pulse">
-                                <Volume2 className="w-6 h-6 text-white text-opacity-90" />
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Close Button */}
-                    <button
-                        onClick={handleMinimize}
-                        className="absolute top-4 right-4 z-30 p-1.5 bg-black/20 hover:bg-black/40 text-white rounded-full backdrop-blur-md transition-colors"
+                <div className="fixed bottom-6 right-6 z-50 animate-in slide-in-from-bottom-4 duration-500">
+                    <div
+                        className="relative group w-[220px] sm:w-[260px] aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl transition-transform hover:scale-[1.02] cursor-pointer"
+                        onClick={handleVideoClick}
                     >
-                        <X className="w-4 h-4" />
-                    </button>
+                        {/* Video Elements */}
+                        <div className="absolute inset-0 bg-black/10 z-10" />
+                        <video
+                            ref={videoRef}
+                            src={videoUrl}
+                            className="w-full h-full object-cover"
+                            autoPlay
+                            loop
+                            muted={isMuted}
+                            playsInline
+                        />
 
-                    {/* Bottom CTA */}
-                    <div className="absolute bottom-6 left-0 right-0 z-20 flex justify-center px-4">
+                        {/* Online Badge */}
+                        <div className="absolute top-4 left-4 z-20 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full pointer-events-none">
+                            <div className={cn("w-2.5 h-2.5 rounded-full", isOnline ? "bg-green-500 animate-pulse" : "bg-gray-400")} />
+                            <span className="text-xs font-medium text-white">Kate is online</span>
+                        </div>
+
+                        {/* Volume/Unmute Overlay Hint */}
+                        {isMuted && (
+                            <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+                                <div className="w-12 h-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center animate-pulse">
+                                    <Volume2 className="w-6 h-6 text-white text-opacity-90" />
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Close Button */}
                         <button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                if (videoRef.current) {
-                                    videoRef.current.pause();
-                                }
-                                onClick();
-                            }}
-                            className="w-full bg-white/90 hover:bg-white text-primary font-semibold py-3 px-6 rounded-xl shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2"
+                            onClick={handleMinimize}
+                            className="absolute top-4 right-4 z-30 p-1.5 bg-black/20 hover:bg-black/40 text-white rounded-full backdrop-blur-md transition-colors"
                         >
-                            <MessageCircle className="w-5 h-5 fill-current" />
-                            Hi, want to chat?
+                            <X className="w-4 h-4" />
                         </button>
+
+                        {/* Bottom CTA */}
+                        <div className="absolute bottom-6 left-0 right-0 z-20 flex justify-center px-4">
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (videoRef.current) {
+                                        videoRef.current.pause();
+                                    }
+                                    onClick();
+                                }}
+                                className="w-full bg-white/90 hover:bg-white text-primary font-semibold py-3 px-6 rounded-xl shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2"
+                            >
+                                <MessageCircle className="w-5 h-5 fill-current" />
+                                Hi, want to chat?
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </>
         );
     }
 
