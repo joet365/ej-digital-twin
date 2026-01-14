@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Mic, MicOff, Zap } from "lucide-react";
+import { Mic, MicOff, Phone } from "lucide-react";
 
 interface GeminiLiveButtonProps {
     className?: string; // Kept for future
@@ -380,7 +380,7 @@ export const GeminiLiveButton = ({ agentId, onConnect, onDisconnect, systemMessa
                     </>
                 ) : (
                     <>
-                        <Zap className="w-4 h-4 mr-2 fill-yellow-400 text-yellow-400" />
+                        <Phone className="w-4 h-4 mr-2 fill-yellow-400 text-yellow-400" />
                         Click to talk to {label}
                     </>
                 )}

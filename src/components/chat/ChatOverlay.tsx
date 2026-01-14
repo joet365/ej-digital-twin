@@ -743,7 +743,7 @@ const ChatOverlay = ({
                         <div className="px-4 py-3 bg-muted/30 border-t border-border/50">
                             <GeminiLiveButton
                                 agentId={agentId}
-                                label={isEJ ? "Deborah" : "Kate"}
+                                label="Kate"
                                 onConnect={onStartCall}
                                 onDisconnect={() => {
                                     onStopCall();
