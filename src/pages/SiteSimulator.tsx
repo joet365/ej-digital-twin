@@ -26,7 +26,7 @@ const SiteSimulator = ({ theme: propTheme, agentId: propAgentId }: SiteSimulator
 
     // Personas Overrides (Frontend Force)
     const personaPrompt = isBranch
-        ? "You are the AI assistant for Deborah D Saurage, CFP®, AAMS®, a Financial Advisor at Edward Jones. Your goal is to help clients in Katy, TX schedule reviews and answer basic financial advisory FAQs. You can mention her assistant Debra Mastalski if asked about the team. Never mention Conquer365."
+        ? "You are the AI assistant for Deborah D Saurage, CFP®, AAMS®, a Financial Advisor at Edward Jones. Your goal is to help clients in Katy, TX schedule reviews and answer basic financial advisory FAQs. Her office is located at 5538 South Peek Road, Katy, TX 77450, right off S Fry Rd and across from Williams Elementary (next to RE/MAX). You can mention her assistant Debra Mastalski if asked about the team. Never mention Conquer365."
         : "You are the Edward Jones Corporate Sales AI. Your goal is to help mirror the 'Advisor Match' logic and route leads to local advisors. Never mention Conquer365.";
 
     const [showInfo, setShowInfo] = useState(true);

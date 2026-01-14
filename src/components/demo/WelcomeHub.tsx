@@ -35,21 +35,25 @@ const WelcomeHub = () => {
                         <h2 className="text-2xl font-bold text-slate-900 mb-3">Branch Office Demo</h2>
                         <p className="text-slate-500 mb-6 flex-1">
                             Experience <strong>Deborah's AI Assistant</strong>.
-                            Designed for local advisor sites. Focuses on **scheduling**, **relationship building**, and **answering FAQs** with a personal touch.
+                            Designed for local advisor sites, she handles <strong>appointment scheduling</strong>, <strong>client follow-ups</strong>, and <strong>answers FAQs</strong> with a warm, personal touch.
                         </p>
 
                         <div className="space-y-3 mb-8">
                             <div className="flex items-center gap-2 text-sm text-slate-700">
                                 <span className="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs">✓</span>
-                                Optimized for Voice Calls
+                                Voice & Text AI Receptionist
                             </div>
                             <div className="flex items-center gap-2 text-sm text-slate-700">
                                 <span className="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs">✓</span>
-                                Calendar Integration
+                                Outbound Call-Back (Safety Net)
                             </div>
                             <div className="flex items-center gap-2 text-sm text-slate-700">
                                 <span className="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs">✓</span>
-                                "Advisor Match" logic
+                                Multi-Channel Session Memory
+                            </div>
+                            <div className="flex items-center gap-2 text-sm text-slate-700">
+                                <span className="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs">✓</span>
+                                Advisor Match & Local Knowledge
                             </div>
                         </div>
 
@@ -72,22 +76,26 @@ const WelcomeHub = () => {
                         </div>
                         <h2 className="text-2xl font-bold text-slate-900 mb-3">Corporate Sales Demo</h2>
                         <p className="text-slate-500 mb-6 flex-1">
-                            Experience the **Corporate AI Sales Agent**.
-                            Designed for high-volume landing pages. Focuses on **lead qualification**, **funnel management**, and **routing leads** to the right advisor.
+                            Experience the <strong>Corporate AI Sales Agent</strong>.
+                            Designed for high-volume landing pages. She qualifies leads in real-time, manages engagement funnels, and routes prospects to the right advisor.
                         </p>
 
                         <div className="space-y-3 mb-8">
                             <div className="flex items-center gap-2 text-sm text-slate-700">
                                 <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs">✓</span>
-                                Optimized for Text Chat
+                                Instant Lead Qualification
                             </div>
                             <div className="flex items-center gap-2 text-sm text-slate-700">
                                 <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs">✓</span>
-                                Lead Scoring & Qualification
+                                Automated Nurture Sequences
                             </div>
                             <div className="flex items-center gap-2 text-sm text-slate-700">
                                 <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs">✓</span>
-                                CRM Integration
+                                CRM & Calendar Sync
+                            </div>
+                            <div className="flex items-center gap-2 text-sm text-slate-700">
+                                <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs">✓</span>
+                                AI-Powered Lead Scoring
                             </div>
                         </div>
 

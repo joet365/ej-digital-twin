@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { QuickReplyOptions } from "./QuickReplyButton";
+import { MapPin, ExternalLink } from "lucide-react";
 
 interface ChatMessageProps {
     message: string;
@@ -11,6 +12,7 @@ interface ChatMessageProps {
     disableQuickReplies?: boolean;
     imageUrl?: string;
     videoUrl?: string;
+    locationId?: string;
 }
 
 const ChatMessage = ({
@@ -23,6 +25,7 @@ const ChatMessage = ({
     disableQuickReplies = false,
     imageUrl,
     videoUrl,
+    locationId,
 }: ChatMessageProps) => {
     const formattedTime = timestamp.toLocaleTimeString([], {
         hour: '2-digit',
@@ -65,6 +68,43 @@ const ChatMessage = ({
         );
     };
 
+    const renderLocationCard = () => {
+        if (!locationId) return null;
+
+        const address = "5538 South Peek Road, Katy, TX 77450";
+        const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+
+        return (
+            <div className="mb-3 rounded-2xl overflow-hidden border border-border/50 shadow-md bg-card animate-in zoom-in-95 duration-500">
+                <div className="relative h-40 w-full overflow-hidden bg-muted">
+                    <img
+                        src="https://streetviewpixels-pa.googleapis.com/v1/thumbnail?cb_client=maps_sv.tactile&w=900&h=600&pitch=0&panoid=Ngvd2DQmnzIwouQP0zzjOQ&yaw=257.84894"
+                        alt="Katy Branch Office"
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute bottom-3 left-4 flex items-center gap-2 text-white">
+                        <MapPin className="w-4 h-4 text-primary" />
+                        <span className="text-xs font-bold uppercase tracking-wider">Katy Branch Office</span>
+                    </div>
+                </div>
+                <div className="p-4 space-y-3">
+                    <div className="space-y-1">
+                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Address</p>
+                        <p className="text-sm font-bold leading-tight">{address}</p>
+                    </div>
+                    <button
+                        onClick={() => window.open(mapUrl, '_blank')}
+                        className="w-full py-2.5 rounded-xl border border-primary/20 bg-primary/5 text-primary text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-primary/10 transition-colors"
+                    >
+                        <ExternalLink className="w-3 h-3" />
+                        View on Google Maps
+                    </button>
+                </div>
+            </div>
+        );
+    };
+
     return (
         <div
             className={cn(
@@ -102,6 +142,7 @@ const ChatMessage = ({
                         </div>
                     )}
                     {renderVideo()}
+                    {renderLocationCard()}
                     <p className="text-sm leading-relaxed">{message}</p>
                     <span className={cn(
                         "text-xs mt-1 block",

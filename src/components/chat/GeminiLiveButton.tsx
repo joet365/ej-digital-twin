@@ -1,19 +1,25 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useImperativeHandle, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Mic, MicOff, Phone } from "lucide-react";
 
 interface GeminiLiveButtonProps {
     className?: string; // Kept for future
     agentId?: string;
+    sessionId?: string;
     onConnect?: () => void;
     onDisconnect?: () => void;
     systemMessage?: string | null;
     disabled?: boolean;
     onFrameCapture?: (base64: string) => void;
+    onTranscription?: (text: string, role: "user" | "model") => void;
     label?: string;
 }
 
-export const GeminiLiveButton = ({ agentId, onConnect, onDisconnect, systemMessage, disabled, onFrameCapture, label = "Kate" }: GeminiLiveButtonProps) => {
+export interface GeminiLiveButtonHandle {
+    sendText: (text: string) => void;
+}
+
+export const GeminiLiveButton = forwardRef<GeminiLiveButtonHandle, GeminiLiveButtonProps>(({ agentId, sessionId, onConnect, onDisconnect, systemMessage, disabled, onFrameCapture, onTranscription, label = "Kate" }, ref) => {
     const [isConnected, setIsConnected] = useState(false);
     const [isConnecting, setIsConnecting] = useState(false);
     const audioContextRef = useRef<AudioContext | null>(null);
@@ -40,8 +46,8 @@ export const GeminiLiveButton = ({ agentId, onConnect, onDisconnect, systemMessa
             // -------------------------------------------------------------
             // We bypass environment variables to ensure we don't fall back 
             // to the 2-minute Supabase Edge Function.
-            const CLOUD_RUN_URL = "wss://gemini-web-relay-725655992592.us-central1.run.app";
-            const wsUrl = `${CLOUD_RUN_URL}?agentId=${agentId || ""}`;
+            const CLOUD_RUN_URL = "wss://gemini-twilio-voice-725655992592.us-central1.run.app";
+            const wsUrl = `${CLOUD_RUN_URL}?agentId=${agentId || ""}&sessionId=${sessionId || ""}`;
             // -------------------------------------------------------------
 
             console.log("Connecting to WebSocket URL:", wsUrl);
@@ -99,6 +105,15 @@ export const GeminiLiveButton = ({ agentId, onConnect, onDisconnect, systemMessa
                             }
                         }
                     }
+
+                    if (onTranscription) {
+                        if (data.serverContent?.inputTranscription?.text) {
+                            onTranscription(data.serverContent.inputTranscription.text, "user");
+                        }
+                        if (data.serverContent?.outputTranscription?.text) {
+                            onTranscription(data.serverContent.outputTranscription.text, "model");
+                        }
+                    }
                 } catch (e) {
                     console.error("Failed to parse WebSocket message:", event.data);
                 }
@@ -117,6 +132,24 @@ export const GeminiLiveButton = ({ agentId, onConnect, onDisconnect, systemMessa
             setIsConnecting(false);
         }
     };
+
+    useImperativeHandle(ref, () => ({
+        sendText: (text: string) => {
+            if (isConnected && wsRef.current?.readyState === WebSocket.OPEN) {
+                console.log("Sending Silent Selection to Gemini:", text);
+                const msg = {
+                    clientContent: {
+                        turns: [{
+                            role: "user",
+                            parts: [{ text: text }]
+                        }],
+                        turnComplete: true
+                    }
+                };
+                wsRef.current.send(JSON.stringify(msg));
+            }
+        }
+    }), [isConnected]);
 
     // Handle System Message Injection
     useEffect(() => {
@@ -392,4 +425,4 @@ export const GeminiLiveButton = ({ agentId, onConnect, onDisconnect, systemMessa
             )}
         </div>
     );
-};
+});

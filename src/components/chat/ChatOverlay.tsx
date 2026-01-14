@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import ChatMessage from "./ChatMessage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { GeminiLiveButton } from "./GeminiLiveButton";
+import { GeminiLiveButton, GeminiLiveButtonHandle } from "./GeminiLiveButton";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Message {
@@ -16,6 +16,7 @@ interface Message {
     quickRepliesUsed?: boolean;
     imageUrl?: string;
     videoUrl?: string;
+    locationId?: string;
 }
 
 // Lead capture stage tracking
@@ -112,7 +113,7 @@ const ChatOverlay = ({
         if (isDeborah) {
             return [{
                 id: "1",
-                text: `Hi! 👋 I'm Deborah D Saurage's AI assistant. To get started, may I ask your name?`,
+                text: `Hi! 👋 I'm Deborah D Saurage's AI assistant. To get started, may I ask your name? [image:https://yuoksgysfefxplwhfprs.supabase.co/storage/v1/object/public/mms-images/branded_output.png]`,
                 isKate: true,
                 timestamp: new Date(),
                 quickReplies: ["Retirement Planning", "Estate Planning", "Investment Review", "Just Curious"],
@@ -122,7 +123,7 @@ const ChatOverlay = ({
         // Generic / Corporate Fallback
         return [{
             id: "1",
-            text: `Hi! 👋 I'm Kate, your AI assistant for ${companyName}. How can I help you today?`,
+            text: `Hi! 👋 I'm Kate, your AI assistant for ${companyName}. How can I help you today? [image:https://yuoksgysfefxplwhfprs.supabase.co/storage/v1/object/public/mms-images/branded_output.png]`,
             isKate: true,
             timestamp: new Date(),
             quickReplies: ["AI Receptionist", "AI Sales", "AI Workforce", "Increase Sales", "How it Works"],
@@ -180,7 +181,25 @@ const ChatOverlay = ({
     const [leadCaptureStage, setLeadCaptureStage] = useState<LeadCaptureStage>(getInitialLeadStage());
     const [capturedLead, setCapturedLead] = useState<CapturedLead>(getInitialLeadData());
     const [latestFrame, setLatestFrame] = useState<string | null>(null);
+    const [voiceButtons, setVoiceButtons] = useState<string[]>([]);
+    const geminiRef = useRef<GeminiLiveButtonHandle>(null);
 
+    // Helper to persist messages to Supabase for cross-channel context
+    const persistMessage = async (role: 'user' | 'assistant', content: string) => {
+        try {
+            const { error } = await supabase.from('transcript_messages').insert({
+                conversation_id: sessionId,
+                role: role,
+                content: content,
+                timestamp: new Date().toISOString(),
+            });
+            if (error) {
+                console.error('[ChatOverlay] Failed to persist message:', error.message);
+            }
+        } catch (e) {
+            console.error('[ChatOverlay] Persist message error:', e);
+        }
+    };
     // Persist to sessionStorage on changes
     useEffect(() => {
         sessionStorage.setItem(`kate_messages_${agentId}`, JSON.stringify(messages));
@@ -368,12 +387,24 @@ const ChatOverlay = ({
             const videoMatch = replyTextRaw.match(videoRegex);
             const videoUrl = videoMatch ? videoMatch[1].trim() : undefined;
 
+            // Parse for [image:url]
+            const imageRegex = /\[image:([^\]]+)\]/i;
+            const imageMatch = replyTextRaw.match(imageRegex);
+            const imageUrl = imageMatch ? imageMatch[1].trim() : undefined;
+
+            // Parse for [location:id]
+            const locationRegex = /\[location:([^\]]+)\]/i;
+            const locationMatch = replyTextRaw.match(locationRegex);
+            const locationId = locationMatch ? locationMatch[1].trim() : undefined;
+
             // Parse for [Buttons]
             const buttonRegex = /\[([^\]]+)\]/g;
             const buttons: string[] = [];
             let match;
             while ((match = buttonRegex.exec(replyTextRaw)) !== null) {
                 if (match[0].toLowerCase().startsWith('[video:')) continue;
+                if (match[0].toLowerCase().startsWith('[image:')) continue;
+                if (match[0].toLowerCase().startsWith('[location:')) continue;
                 buttons.push(match[1]);
             }
 
@@ -381,6 +412,12 @@ const ChatOverlay = ({
             let cleanText = replyTextRaw.replace(buttonRegex, "").trim();
             if (videoUrl) {
                 cleanText = cleanText.replace(videoRegex, "").trim();
+            }
+            if (imageUrl) {
+                cleanText = cleanText.replace(imageRegex, "").trim();
+            }
+            if (locationId) {
+                cleanText = cleanText.replace(locationRegex, "").trim();
             }
 
             const kateResponse: Message = {
@@ -390,6 +427,8 @@ const ChatOverlay = ({
                 timestamp: new Date(),
                 quickReplies: buttons.length > 0 ? buttons : undefined,
                 videoUrl: videoUrl,
+                imageUrl: imageUrl,
+                locationId: locationId,
             };
             setMessages(prev => [...prev, kateResponse]);
         } catch (err) {
@@ -421,6 +460,8 @@ const ChatOverlay = ({
         setMessages((prev) => [...prev, userMessage]);
         setInputValue("");
 
+        // Persist user message to Supabase for cross-channel context
+        persistMessage('user', userInput);
         // Handle lead capture stages
         if (leadCaptureStage === 'industry' && !isEJ) {
             if (userInput.length < 2) {
@@ -578,12 +619,24 @@ const ChatOverlay = ({
             const videoMatch = replyTextRaw.match(videoRegex);
             const videoUrl = videoMatch ? videoMatch[1].trim() : undefined;
 
+            // Parse for [image:url]
+            const imageRegex = /\[image:([^\]]+)\]/i;
+            const imageMatch = replyTextRaw.match(imageRegex);
+            const imageUrl = imageMatch ? imageMatch[1].trim() : undefined;
+
+            // Parse for [location:id]
+            const locationRegex = /\[location:([^\]]+)\]/i;
+            const locationMatch = replyTextRaw.match(locationRegex);
+            const locationId = locationMatch ? locationMatch[1].trim() : undefined;
+
             // Parse for [Buttons]
             const buttonRegex = /\[([^\]]+)\]/g;
             const buttons: string[] = [];
             let match;
             while ((match = buttonRegex.exec(replyTextRaw)) !== null) {
                 if (match[0].toLowerCase().startsWith('[video:')) continue;
+                if (match[0].toLowerCase().startsWith('[image:')) continue;
+                if (match[0].toLowerCase().startsWith('[location:')) continue;
                 buttons.push(match[1]);
             }
 
@@ -591,6 +644,12 @@ const ChatOverlay = ({
             let cleanText = replyTextRaw.replace(buttonRegex, "").trim();
             if (videoUrl) {
                 cleanText = cleanText.replace(videoRegex, "").trim();
+            }
+            if (imageUrl) {
+                cleanText = cleanText.replace(imageRegex, "").trim();
+            }
+            if (locationId) {
+                cleanText = cleanText.replace(locationRegex, "").trim();
             }
 
             const kateResponse: Message = {
@@ -600,9 +659,13 @@ const ChatOverlay = ({
                 timestamp: new Date(),
                 quickReplies: buttons.length > 0 ? buttons : undefined,
                 videoUrl: videoUrl,
+                imageUrl: imageUrl,
+                locationId: locationId,
             };
             setMessages((prev) => [...prev, kateResponse]);
 
+            // Persist AI response to Supabase for cross-channel context
+            persistMessage('assistant', cleanText);
         } catch (err) {
             console.error("Failed to get chat response:", err);
             const errorResponse: Message = {
@@ -615,6 +678,43 @@ const ChatOverlay = ({
         } finally {
             setIsTyping(false);
         }
+    };
+
+    // Handle incoming transcriptions from Gemini - detect Hybrid UI Patterns
+    const handleVoiceTranscription = (text: string, role: "user" | "model") => {
+        if (role === "model") {
+            // Extract [Buttons]
+            const buttonRegex = /\[([^\]]+)\]/g;
+            const buttons: string[] = [];
+            let match;
+            while ((match = buttonRegex.exec(text)) !== null) {
+                buttons.push(match[1]);
+            }
+
+            if (buttons.length > 0) {
+                console.log("Detected Voice Buttons:", buttons);
+                setVoiceButtons(buttons);
+            }
+        } else if (role === "user") {
+            // Clear buttons when user speaks
+            setVoiceButtons([]);
+        }
+    };
+
+    const handleVoiceButtonSelect = (option: string) => {
+        console.log("Hybrid Button Selected:", option);
+        // 1. Clear buttons
+        setVoiceButtons([]);
+        // 2. Add as message to UI for visual confirmation
+        const userMessage: Message = {
+            id: Date.now().toString(),
+            text: option,
+            isKate: false,
+            timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, userMessage]);
+        // 3. Send to Gemini stream (silent turn)
+        geminiRef.current?.sendText(option);
     };
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -720,6 +820,7 @@ const ChatOverlay = ({
                                 avatar={avatar}
                                 imageUrl={message.imageUrl}
                                 videoUrl={message.videoUrl}
+                                locationId={message.locationId}
                                 quickReplies={message.quickRepliesUsed ? [] : message.quickReplies}
                                 onQuickReplySelect={(option) => handleQuickReplySelect(message.id, option)}
                                 disableQuickReplies={isTyping}
@@ -738,22 +839,41 @@ const ChatOverlay = ({
                         <div ref={messagesEndRef} />
                     </div>
 
-                    {/* Quick Action Bar for Voice */}
-                    {!isCallActive && (
-                        <div className="px-4 py-3 bg-muted/30 border-t border-border/50">
-                            <GeminiLiveButton
-                                agentId={agentId}
-                                label="Kate"
-                                onConnect={onStartCall}
-                                onDisconnect={() => {
-                                    onStopCall();
-                                    setLatestFrame(null);
-                                }}
-                                systemMessage={geminiSystemMessage}
-                                onFrameCapture={(base64) => setLatestFrame(base64)}
-                            />
-                        </div>
-                    )}
+                    {/* Quick Action Bar for Voice & Hybrid Buttons */}
+                    <div className="px-4 py-3 bg-muted/30 border-t border-border/50 flex flex-col gap-2">
+                        <GeminiLiveButton
+                            ref={geminiRef}
+                            agentId={agentId}
+                            sessionId={sessionId}
+                            label={isDeborah ? "Deborah" : "Kate"}
+                            onConnect={onStartCall}
+                            onDisconnect={() => {
+                                onStopCall();
+                                setLatestFrame(null);
+                                setVoiceButtons([]);
+                            }}
+                            onTranscription={handleVoiceTranscription}
+                            systemMessage={geminiSystemMessage}
+                            onFrameCapture={(base64) => setLatestFrame(base64)}
+                        />
+
+                        {/* Hybrid Voice Buttons */}
+                        {isCallActive && voiceButtons.length > 0 && (
+                            <div className="flex flex-wrap gap-2 py-2 animate-in fade-in slide-in-from-bottom-2">
+                                {voiceButtons.map((btn, idx) => (
+                                    <Button
+                                        key={idx}
+                                        variant="outline"
+                                        size="sm"
+                                        className="bg-primary/10 border-primary/20 hover:bg-primary/20 text-primary font-medium rounded-full px-4"
+                                        onClick={() => handleVoiceButtonSelect(btn)}
+                                    >
+                                        {btn}
+                                    </Button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
 
                     {/* Input Area */}
                     <div className="p-4 border-t border-border bg-card/50">
