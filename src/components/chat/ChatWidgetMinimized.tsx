@@ -58,7 +58,7 @@ const ChatWidgetMinimized = ({
         return (
             <div className="fixed bottom-6 right-6 z-50 animate-in slide-in-from-bottom-4 duration-500">
                 <div
-                    className="relative group w-[220px] sm:w-[260px] aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl transition-transform hover:scale-[1.02] cursor-pointer"
+                    className="relative group w-[220px] sm:w-[260px] aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl transition-transform hover:scale-[1.02] cursor-pointer bg-white"
                     onClick={handleVideoClick}
                 >
                     {/* Video Elements */}
