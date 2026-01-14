@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { X, Send, UserCheck, Zap } from "lucide-react";
+import { X, Send, UserCheck, Zap, Mic, MicOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ChatMessage from "./ChatMessage";
 import { Button } from "@/components/ui/button";
@@ -184,6 +184,48 @@ const ChatOverlay = ({
     const [latestFrame, setLatestFrame] = useState<string | null>(null);
     const [voiceButtons, setVoiceButtons] = useState<string[]>([]);
     const geminiRef = useRef<GeminiLiveButtonHandle>(null);
+
+    // Speech Recognition for Voice-to-Text
+    const [isListening, setIsListening] = useState(false);
+    const recognitionRef = useRef<any>(null);
+
+    const startListening = useCallback(() => {
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            console.error('Speech recognition not supported');
+            return;
+        }
+        const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+        recognitionRef.current = new SpeechRecognition();
+        recognitionRef.current.continuous = false;
+        recognitionRef.current.interimResults = true;
+        recognitionRef.current.lang = 'en-US';
+
+        recognitionRef.current.onstart = () => setIsListening(true);
+        recognitionRef.current.onend = () => setIsListening(false);
+        recognitionRef.current.onerror = (e: any) => {
+            console.error('Speech error:', e.error);
+            setIsListening(false);
+        };
+        recognitionRef.current.onresult = (event: any) => {
+            let finalTranscript = '';
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                    finalTranscript += event.results[i][0].transcript;
+                }
+            }
+            if (finalTranscript) {
+                setInputValue(prev => prev + finalTranscript);
+            }
+        };
+        recognitionRef.current.start();
+    }, []);
+
+    const stopListening = useCallback(() => {
+        if (recognitionRef.current) {
+            recognitionRef.current.stop();
+        }
+        setIsListening(false);
+    }, []);
 
     // Helper to persist messages to Supabase for cross-channel context
     const persistMessage = async (role: 'user' | 'assistant', content: string) => {
@@ -878,13 +920,26 @@ const ChatOverlay = ({
 
                     {/* Input Area */}
                     <div className="p-4 border-t border-border bg-card/50">
-                        <div className="relative flex items-end gap-2">
+                        <div className="relative flex items-center gap-2">
+                            <button
+                                type="button"
+                                onClick={isListening ? stopListening : startListening}
+                                className={cn(
+                                    "flex-shrink-0 h-9 w-9 rounded-lg flex items-center justify-center transition-all",
+                                    isListening
+                                        ? "bg-red-500 text-white animate-pulse"
+                                        : "bg-muted hover:bg-muted/80 text-muted-foreground"
+                                )}
+                                title={isListening ? "Stop listening" : "Voice input"}
+                            >
+                                {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                            </button>
                             <Input
                                 value={inputValue}
                                 onChange={(e) => setInputValue(e.target.value)}
                                 onKeyDown={handleKeyPress}
-                                placeholder="Type your message..."
-                                className="pr-12 min-h-[44px] bg-background/50 border-border focus:ring-primary/20 transition-all resize-none"
+                                placeholder={isListening ? "Listening..." : "Type your message..."}
+                                className="flex-1 pr-12 min-h-[44px] bg-background/50 border-border focus:ring-primary/20 transition-all resize-none"
                             />
                             <Button
                                 size="icon"
